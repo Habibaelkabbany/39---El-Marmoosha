@@ -5,6 +5,7 @@ import com.example.model.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,6 +38,7 @@ public class UserRepository extends MainRepository<User>{
     }
     public User addUser(User user){
         save(user);
+        System.out.println("User [id=" + user.getId() + ", name=" + user.getName());
         return user;
     }
     public List<Order> getOrdersByUserId(UUID userId){
@@ -61,15 +63,22 @@ public class UserRepository extends MainRepository<User>{
         for(User user : users){
             if(user.getId().equals(userId)) {
                 List<Order> orders = user.getOrders();
-                for(Order order : orders){
-                    if (order.)
+
+                Iterator<Order> iterator = orders.iterator();
+                while (iterator.hasNext()) {
+                    Order order = iterator.next();
+                    if (order.getId().equals(orderId)) {
+                        iterator.remove();
+                        overrideData(users);
+                        System.out.println("Order removed");
+                        return;
+                    }
                 }
-                overrideData(users);
-                System.out.println("Order added");
-                return;
+
+                System.out.println("Order not removed: Order not found for user with Id: " + userId);
             }
         }
-        System.out.println("Order not added: User not found");
+        System.out.println("Order not removed: User with Id: "+ userId + " not found");
     }
     public void deleteUserById(UUID userId){
         ArrayList<User> users = getUsers();
@@ -78,6 +87,7 @@ public class UserRepository extends MainRepository<User>{
                 users.remove(user);
                 overrideData(users);
                 System.out.println("User with id " + userId + " was deleted.");
+                return;
             }
         }
         System.out.println("User with id " + userId + " was not found");
