@@ -47,6 +47,9 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
+    public String toString(){
+        return "Product [id=" + id + ", name=" + name + ", price=" + price + "]";
+    }
 }
 
 
