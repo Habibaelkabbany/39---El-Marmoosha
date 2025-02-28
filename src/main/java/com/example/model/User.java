@@ -48,5 +48,8 @@ public class User {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+    public String toString(){
+        return "User [id=" + id + ", name=" + name + ", orders=" + orders + "]";
+    }
 }
 
