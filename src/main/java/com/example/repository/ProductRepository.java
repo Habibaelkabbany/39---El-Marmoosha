@@ -51,7 +51,7 @@ public class ProductRepository extends MainRepository<Product> {
         return null;
     }
 
-        public void applyDiscount(int discount, ArrayList<UUID> productIds) {
+        public void applyDiscount(double discount, ArrayList<UUID> productIds) {
             ArrayList<Product> products = getProducts();
             for (Product product : products) {
                 if (productIds.contains(product.getId())) {
