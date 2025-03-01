@@ -40,6 +40,14 @@ public class Product {
         this.price = price;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+//    public void setId(UUID id) {
+//        this.id = id;
+//    }
+
     @Override
     public String toString() {
         return "Product [id=" + id + ", name=" + name + ", price=" + price + "]";
