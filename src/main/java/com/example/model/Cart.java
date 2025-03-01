@@ -49,5 +49,8 @@ public class Cart {
     public void setProducts(List<Product> products) {
         this.products = products;
     }
+    public String toString(){
+        return "Cart [id=" + id + ", userId=" + userId + ", products=" + products + "]";
+    }
 }
 
