@@ -43,6 +43,9 @@ public class UserRepository extends MainRepository<User>{
     }
     public List<Order> getOrdersByUserId(UUID userId){
         User user = getUserById(userId);
+        if(user == null){
+            return null;
+        }
 
         return user.getOrders();
     }
