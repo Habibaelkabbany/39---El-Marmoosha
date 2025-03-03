@@ -12,6 +12,11 @@ import java.util.UUID;
 @Repository
 @SuppressWarnings("rawtypes")
 public class UserRepository extends MainRepository<User>{
+    OrderRepository orderRepository;
+
+    public UserRepository(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
     @Override
     protected String getDataPath() {
         return "src/main/java/com/example/data/users.json";
@@ -51,6 +56,7 @@ public class UserRepository extends MainRepository<User>{
     }
     public void addOrderToUser(UUID userId, Order order){
         ArrayList<User> users = getUsers();
+
         for(User user : users){
             if(user.getId().equals(userId)) {
                 user.getOrders().add(order);
