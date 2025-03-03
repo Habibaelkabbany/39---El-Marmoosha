@@ -5,8 +5,8 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.example.models.Cart;
-import com.example.models.Product;
+import com.example.model.Cart;
+import com.example.model.Product;
 import com.example.repository.CartRepository;
 
 @Service

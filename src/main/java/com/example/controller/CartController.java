@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.models.Cart;
-import com.example.models.Product;
+import com.example.model.Cart;
+import com.example.model.Product;
 import com.example.service.CartService;
 
 @RestController
