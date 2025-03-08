@@ -94,11 +94,6 @@ public class UserService extends MainService<User>{
         userRepository.addOrderToUser(userId, order);
     }
 
-        else {
-            cart.setItems(new ArrayList<>());
-            cartService.saveCart(cart);
-        }
-    }
 
 
 
