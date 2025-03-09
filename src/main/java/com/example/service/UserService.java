@@ -1,8 +1,5 @@
 package com.example.service;
 
-<<<<<<< Updated upstream
-public class UserService {
-=======
 import com.example.model.Cart;
 import com.example.model.Order;
 import com.example.model.Product;
@@ -100,5 +97,7 @@ public class UserService extends MainService<User>{
 
 
 
->>>>>>> Stashed changes
+//The Dependency Injection Variables
+//The Constructor with the requried variables mapping the Dependency Injection.
 }
+

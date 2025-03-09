@@ -1,8 +1,22 @@
 package com.example.controller;
 
+import com.example.model.Cart;
+import com.example.model.Order;
+import com.example.model.Product;
+import com.example.model.User;
+import com.example.service.CartService;
+import com.example.service.OrderService;
+import com.example.service.ProductService;
+import com.example.service.UserService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/user")
 public class UserController {
-<<<<<<< Updated upstream
-=======
 //The Dependency Injection Variables
 //The Constructor with the requried variables mapping the Dependency Injection.
     private final UserService userService;
@@ -46,24 +60,24 @@ public class UserController {
         userService.emptyCart(userId);
         return "Cart empty";
     }
-    @PutMapping("/addProductToCart")
-    public String addProductToCart(@RequestParam UUID userId, @RequestParam UUID productId){
-        Cart cart = cartService.getCartByUserId( userId);
-        UUID cartId = cart.getId();
-        Product product = productService.getProductById(productId);
-
-        cartService.addProductToCart(cartId, product);
-        return "Product added";
-    }
-    @PutMapping("/deleteProductFromCart")
-    public String deleteProductFromCart(@RequestParam UUID userId, @RequestParam UUID productId){
-        Cart cart = cartService.getCartByUserId(userId);
-        UUID cartId = cart.getId();
-        Product product = productService.getProductById(productId);
-
-        cartService.deleteProductFromCart(cartId, product);
-        return "Product added";
-    }
+//    @PutMapping("/addProductToCart")
+//    public String addProductToCart(@RequestParam UUID userId, @RequestParam UUID productId){
+//        Cart cart = cartService.getCartByUserId( userId);
+//        UUID cartId = cart.getId();
+//        Product product = productService.getProductById(productId);
+//
+//        cartService.addProductToCart(cartId, product);
+//        return "Product added";
+//    }
+//    @PutMapping("/deleteProductFromCart")
+//    public String deleteProductFromCart(@RequestParam UUID userId, @RequestParam UUID productId){
+//        Cart cart = cartService.getCartByUserId(userId);
+//        UUID cartId = cart.getId();
+//        Product product = productService.getProductById(productId);
+//
+//        cartService.deleteProductFromCart(cartId, product);
+//        return "Product added";
+//    }
 
     @DeleteMapping("/delete/{userId}")
     public String deleteUserById(@PathVariable UUID userId){
@@ -74,5 +88,5 @@ public class UserController {
 
 
 
->>>>>>> Stashed changes
 }
+
