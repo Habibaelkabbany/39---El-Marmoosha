@@ -55,7 +55,7 @@ public class ProductRepository extends MainRepository<Product> {
             ArrayList<Product> products = getProducts();
             for (Product product : products) {
                 if (productIds.contains(product.getId())) {
-                    double newPrice = product.getPrice() * (discount / 100.0);
+                    double newPrice = product.getPrice() * ((100 - discount) / 100.0);
                     product.setPrice(newPrice);
                 }
             }

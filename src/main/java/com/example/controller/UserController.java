@@ -48,41 +48,54 @@ public class UserController {
     @PostMapping("/{userId}/checkout")
     public String addOrderToUser(@PathVariable UUID userId){
          userService.addOrderToUser(userId);
-         return "Order added";
+         return "Order added successfully";
     }
     @PostMapping("/{userId}/removeOrder")
     public String removeOrderFromUser(@PathVariable UUID userId, @RequestParam UUID orderId){
         userService.removeOrderFromUser(userId, orderId);
-        return "Order removed";
+        return "Order removed successfully";
     }
     @DeleteMapping("/{userId}/emptyCart")
     public String emptyCart(@PathVariable UUID userId){
         userService.emptyCart(userId);
-        return "Cart empty";
+        return "Cart emptied successfully";
     }
-//    @PutMapping("/addProductToCart")
-//    public String addProductToCart(@RequestParam UUID userId, @RequestParam UUID productId){
-//        Cart cart = cartService.getCartByUserId( userId);
-//        UUID cartId = cart.getId();
-//        Product product = productService.getProductById(productId);
-//
-//        cartService.addProductToCart(cartId, product);
-//        return "Product added";
-//    }
-//    @PutMapping("/deleteProductFromCart")
-//    public String deleteProductFromCart(@RequestParam UUID userId, @RequestParam UUID productId){
-//        Cart cart = cartService.getCartByUserId(userId);
-//        UUID cartId = cart.getId();
-//        Product product = productService.getProductById(productId);
-//
-//        cartService.deleteProductFromCart(cartId, product);
-//        return "Product added";
-//    }
+   @PutMapping("/addProductToCart")
+   public String addProductToCart(@RequestParam UUID userId, @RequestParam UUID productId){
+       Cart cart = cartService.getCartByUserId(userId);
+       Product product = productService.getProductById(productId);
+       if (product == null){
+           return "Product not found"; // TEST THIS
+       }
+       if (cart == null){
+           cart = new Cart(userId, new ArrayList<>());
+           cartService.addCart(cart);
+       }
+       UUID cartId = cart.getId();
+
+       cartService.addProductToCart(cartId, product);
+       return "Product added to cart";
+   }
+   @PutMapping("/deleteProductFromCart")
+   public String deleteProductFromCart(@RequestParam UUID userId, @RequestParam UUID productId){
+       Cart cart = cartService.getCartByUserId(userId);
+       Product product = productService.getProductById(productId);
+       if (cart == null || cart.getProducts().isEmpty()){
+           return "Cart is empty";
+        }
+        UUID cartId = cart.getId();
+        cartService.deleteProductFromCart(cartId, product);
+       return "Product deleted from cart";
+   }
 
     @DeleteMapping("/delete/{userId}")
     public String deleteUserById(@PathVariable UUID userId){
+        boolean exists = getUserById(userId) != null;
+        if (!exists) {
+            return "User not found";
+        }
         userService.deleteUserById(userId);
-        return "User deleted";
+        return "User deleted successfully";
     }
 
 

@@ -20,37 +20,38 @@ import com.example.service.CartService;
 @RequestMapping("/cart")
 public class CartController {
 
+    private final CartService cartService;
+
+    public CartController(CartService cartService) {
+        this.cartService = cartService;
+    }
+
     @PostMapping("/")
     public Cart addCart(@RequestBody Cart cart) {
-        CartService cartService = new CartService();
         cartService.addCart(cart);
         return cart;
     }
 
     @GetMapping("/")
     public ArrayList<Cart> getCarts() {
-        CartService cartService = new CartService();
         return cartService.getCarts();
     }
 
-    @GetMapping("/{cartId}")
-    public Cart getCartById(@PathVariable UUID cartId) {
-        CartService cartService = new CartService();
-        return cartService.getCartById(cartId);
+    @GetMapping("/{id}")
+    public Cart getCartById(@PathVariable UUID id) {
+        return cartService.getCartById(id);
     }
 
     @PutMapping("/addProduct/{cartId}")
     public String addProductToCart(@PathVariable UUID cartId, @RequestBody Product product) {
-        CartService cartService = new CartService();
         cartService.addProductToCart(cartId, product);
         return "Product added to cart";
     }
 
     @DeleteMapping("/delete/{cartId}")
     public String deleteCartById(@PathVariable UUID cartId) {
-        CartService cartService = new CartService();
         cartService.deleteCart(cartId);
-        return "Cart deleted";
+        return "Cart deleted successfully";
     }
 
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import com.example.service.ProductService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,10 +23,10 @@ import com.example.service.OrderService;
 @RestController
 @RequestMapping("/order")
 public class OrderController {
-    //The Dependency Injection Variables
-//The Constructor with the requried variables mapping the Dependency Injection.
+    
     private final OrderService orderService;
 
+    @Autowired
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
@@ -46,7 +48,12 @@ public class OrderController {
 
     @DeleteMapping("/delete/{orderId}")
     public String deleteOrderById(@PathVariable UUID orderId){
-        return deleteOrderById(orderId);
+        Order order = orderService.getOrderById(orderId);
+        if (order == null) {
+            return "Order not found";
+        }
+        orderService.deleteOrderById(orderId);
+        return "Order deleted successfully";
     }
 
 

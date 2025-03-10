@@ -1,5 +1,6 @@
 package com.example.repository;
 
+import com.example.model.Cart;
 import com.example.model.Order;
 import org.springframework.stereotype.Repository;
 
@@ -30,54 +31,28 @@ public class OrderRepository extends MainRepository<Order> {
     }
 
     public Order addOrder(Order order) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            File file = new ClassPathResource(getDataPath()).getFile();
-            ArrayList<Order> orders = objectMapper.readValue(file, new TypeReference<ArrayList<Order>>() {});
-
-            orders.add(order);
-
-            objectMapper.writeValue(file, orders);
-            return order;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to write to orders.json");
-        }
+        save(order);
+        return order;
     }
 
     public  ArrayList<Order> getOrders() {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            File file = new ClassPathResource(getDataPath()).getFile();
-            ArrayList<Order> orders = objectMapper.readValue(file, new TypeReference<ArrayList<Order>>() {});
-
-            return orders;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to write to orders.json");
-        }
+        return findAll();
     }
 
     public Order getOrderById(UUID orderId){
-        return getOrders().stream().filter(order->order.getId().equals(orderId)).findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
+        ArrayList<Order> orders = getOrders();
+        for(Order order : orders){
+            if(order.getId().equals(orderId)) {
+                return order;
+            }
+        }
+        return null;
     }
 
 
     public void deleteOrderById(UUID orderId) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            File file = new ClassPathResource(getDataPath()).getFile();
-            ArrayList<Order> orders = objectMapper.readValue(file, new TypeReference<ArrayList<Order>>() {
-            });
-
-            orders.removeIf(order -> order.getId().equals(orderId));
-
-            objectMapper.writeValue(file, orders);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to write to carts.json");
-        }
+        ArrayList<Order> orders = getOrders();
+        orders.removeIf(order -> order.getId().equals(orderId));
     }
 
 
