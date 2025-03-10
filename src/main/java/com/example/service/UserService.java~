@@ -25,9 +25,6 @@ public class UserService extends MainService<User>{
         this.cartService = cartService;
     }
     public User addUser(User user) {
-        if (user.getName() == null) {
-            user.setName("");  // Ensure no null names
-        }
         return userRepository.addUser(user);
     }
     public ArrayList<User> getUsers() {
