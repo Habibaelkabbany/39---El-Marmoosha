@@ -35,6 +35,6 @@ public class Main {
 //        userRepository.deleteUserById(UUID.fromString("00000000-0000-0001-0000-000000000001"));
         // Retrieve all users
         ArrayList<User> users = userRepository.getUsers();
-        System.out.println("Users: " + users);
+        System.out.println("Users: " + users.getFirst().getOrders().size());
     }
 }

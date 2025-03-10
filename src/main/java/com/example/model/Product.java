@@ -24,6 +24,14 @@ public class Product {
         this.price = price;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public UUID setId(UUID id) {
+        return this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -39,14 +47,6 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
-
-    public UUID getId() {
-        return id;
-    }
-
-//    public void setId(UUID id) {
-//        this.id = id;
-//    }
 
     @Override
     public String toString() {
