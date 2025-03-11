@@ -469,8 +469,7 @@
  		testUser18.setId(UUID.randomUUID());
  		testUser18.setName("Test User18");
  		addUser(testUser18);
-//		 System.out.println("HAAAA" + userRepository.getUserById(testUser18.getId()));
-//		 System.out.println("HAAAA22  "+ testUser18.getId());
+
 
  		mockMvc.perform(MockMvcRequestBuilders.delete("/user/delete/{userId}", UUID.randomUUID()))
  				.andExpect(MockMvcResultMatchers.status().isOk())
