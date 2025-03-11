@@ -55,8 +55,8 @@ class OrderServiceTests {
     }
 
     @Test
-    void testAddOrder_Negative_EmptyProducts() {
-        Order orderWithEmptyProducts = new Order(userId, 100.0, new ArrayList<>());
+    void testAddOrder_Negative_NullProducts() {
+        Order orderWithEmptyProducts = new Order(userId, 100.0, null);
         
         assertThrows(IllegalArgumentException.class, () -> {
             orderService.addOrder(orderWithEmptyProducts);

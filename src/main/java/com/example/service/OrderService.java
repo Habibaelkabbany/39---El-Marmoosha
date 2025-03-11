@@ -19,8 +19,8 @@ public class OrderService extends MainService<Order> {
         if (order == null) {
             throw new IllegalArgumentException("Order cannot be null");
         }
-        if (order.getProducts() == null || order.getProducts().isEmpty()) {
-            throw new IllegalArgumentException("Order must contain at least one product");
+        if (order.getProducts() == null) {
+            throw new IllegalArgumentException("Order cannot have null products");
         }
         return orderRepository.addOrder(order);
     }
