@@ -22,15 +22,35 @@ public class CartService extends MainService<Cart> {
     }
 
     public Cart addCart(Cart cart) {
-        return repository.addCart(cart);
+        if (cart == null) {
+            throw new RuntimeException("Cart cannot be null");
+        }
+       try {
+           return repository.addCart(cart);
+       } catch (Exception e) {
+           throw new RuntimeException("Cannot add cart");
+       }
+
     }
 
     public ArrayList<Cart> getCarts() {
-        return repository.getCarts();
+        ArrayList<Cart> carts = repository.getCarts();
+        if (carts == null) {
+            return new ArrayList<>();
+        }
+        return carts;
     }
 
     public Cart getCartById(UUID cartId) {
-        return repository.getCartById(cartId);
+        if (cartId == null) {
+            throw new RuntimeException("Cart ID cannot be null");
+        }
+        Cart cart = repository.getCartById(cartId);
+        if (cart == null) {
+            throw new RuntimeException("Cart not found");
+        }
+        return cart;
+
     }
     public Cart getCartByUserId(UUID userId) {
         return repository.getCartByUserId(userId);

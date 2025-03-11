@@ -61,7 +61,7 @@ public class UserRepository extends MainRepository<User>{
             if(user.getId().equals(userId)) {
                 user.getOrders().add(order);
                 overrideData(users);
-
+                orderRepository.addOrder(order);
                 System.out.println("Order added");
                 return;
             }
