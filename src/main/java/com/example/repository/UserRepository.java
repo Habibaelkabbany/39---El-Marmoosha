@@ -61,7 +61,7 @@ public class UserRepository extends MainRepository<User>{
             if(user.getId().equals(userId)) {
                 user.getOrders().add(order);
                 overrideData(users);
-                orderRepository.addOrder(order);
+
                 System.out.println("Order added");
                 return;
             }
@@ -94,6 +94,7 @@ public class UserRepository extends MainRepository<User>{
         ArrayList<User> users = getUsers();
         for(User user : users){
             if(user.getId().equals(userId)) {
+                System.out.println("Usering ");
                 users.remove(user);
                 overrideData(users);
                 System.out.println("User with id " + userId + " was deleted.");

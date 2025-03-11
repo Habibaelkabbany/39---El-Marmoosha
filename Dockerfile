@@ -6,8 +6,13 @@ WORKDIR /app
 # Copy the JAR file into the container
 COPY target/mini1.jar /app/app.jar
 
-# Create a directory for JSON data files
-RUN mkdir -p /app/data
+VOLUME /app/data
+
+# Copy the JSON files into the container
+COPY data/users.json /app/data/users.json
+COPY data/products.json /app/data/products.json
+COPY data/carts.json /app/data/carts.json
+COPY data/orders.json /app/data/orders.json
 
 # Set environment variables for JSON file paths
 ENV USERS_JSON_PATH=/app/data/users.json
