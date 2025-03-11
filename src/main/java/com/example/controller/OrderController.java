@@ -53,8 +53,9 @@ public class OrderController {
 
     @DeleteMapping("/delete/{orderId}")
     public String deleteOrderById(@PathVariable UUID orderId){
-        Order order = orderService.getOrderById(orderId);
-        if (order == null) {
+        try {
+            orderService.deleteOrderById(orderId);
+        } catch (Exception e) {
             return "Order not found";
         }
         orderService.deleteOrderById(orderId);
