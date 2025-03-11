@@ -26,22 +26,21 @@ public class UserService extends MainService<User>{
     }
     public User addUser(User user) {
         if (user.getName() == null) {
-            user.setName("");  // Ensure no null names
+            throw new NullPointerException("User name is required");
         }
         return userRepository.addUser(user);
     }
     public ArrayList<User> getUsers() {
         return userRepository.getUsers();
     }
-    public User getUserById(UUID userId){
+    public User getUserById(UUID userId) {
         User user = userRepository.getUserById(userId);
-        if(user == null){
+        if (user == null) {
             throw new RuntimeException("User not found");
         }
-        else {
-            return user;
-        }
+        return user;
     }
+
     public List<Order> getOrdersByUserId(UUID userId){
 //        return userRepository.getOrdersByUserId(userId);
         List<Order> orders = userRepository.getOrdersByUserId(userId);

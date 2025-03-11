@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.model.Cart;
 import com.example.model.Product;
+import com.example.model.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -21,94 +22,78 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CartRepository extends MainRepository<Cart> {
 
     public Cart addCart(Cart cart) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            File file = new ClassPathResource(getDataPath()).getFile();
-            ArrayList<Cart> carts = objectMapper.readValue(file, new TypeReference<ArrayList<Cart>>() {});
-
-            carts.add(cart);
-
-            objectMapper.writeValue(file, carts);
-            return cart;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to write to carts.json");
-        }
+        save(cart);
+        return cart;
     }
 
     public ArrayList<Cart> getCarts() {
-        try {
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            File file = new ClassPathResource(getDataPath()).getFile();
-            ArrayList<Cart> carts = objectMapper.readValue(file, new TypeReference<ArrayList<Cart>>() {
-            });
-
-            return carts;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to read carts.json");
-        }
+        return findAll();
     }
 
     public Cart getCartById(UUID cartId) {
-        return getCarts().stream().filter(cart -> cart.getId().equals(cartId)).findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
+        ArrayList<Cart> carts = getCarts();
+        for(Cart cart : carts){
+            if(cart.getId().equals(cartId)) {
+                return cart;
+            }
+        }
+        return null;
     }
 
     public Cart getCartByUserId(UUID userId) {
-        return getCarts().stream().filter(cart -> cart.getUserId().equals(userId)).findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
+        ArrayList<Cart> carts = getCarts();
+        for(Cart cart : carts){
+            if(cart.getUserId().equals(userId)) {
+                return cart;
+            }
+        }
+        return null;
     }
 
     public void addProductToCart(UUID cartId, Product product) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            File file = new ClassPathResource(getDataPath()).getFile();
-            ArrayList<Cart> carts = objectMapper.readValue(file, new TypeReference<ArrayList<Cart>>() {});
+        ArrayList<Cart> carts = getCarts();
 
-            carts.stream()
-                .filter(cart -> cart.getId().equals(cartId))
-                .findFirst()
-                .ifPresent(cart -> cart.getProducts().add(product));
+        for(Cart cart : carts){
+            if(cart.getId().equals(cartId)) {
+                cart.getProducts().add(product);
+                overrideData(carts);
 
-            objectMapper.writeValue(file, carts);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to write to carts.json");
+                System.out.println("Product added");
+                return;
+            }
         }
+        System.out.println("Product not added: Cart not found");
     }
 
     public void deleteProductFromCart(UUID cartId, Product product) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            File file = new ClassPathResource(getDataPath()).getFile();
-            ArrayList<Cart> carts = objectMapper.readValue(file, new TypeReference<ArrayList<Cart>>() {});
+        ArrayList<Cart> carts = getCarts();
 
-            carts.stream()
-                .filter(cart -> cart.getId().equals(cartId))
-                .findFirst()
-                .ifPresent(cart -> cart.getProducts().removeIf(p -> p.getId().equals(product.getId())));
-
-            objectMapper.writeValue(file, carts);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to write to carts.json");
+        for(Cart cart : carts){
+            if(cart.getId().equals(cartId)) {
+                boolean exists = cart.getProducts().remove(product);
+                overrideData(carts);
+                if (exists) {
+                    System.out.println("Product removed");
+                    return;
+                } else {
+                    System.out.println("Product not removed: Product not found");
+                    return;
+                }
+            }
         }
+        System.out.println("Product not removed: Cart not found");
     }
 
     public void deleteCartById(UUID cartId) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            File file = new ClassPathResource(getDataPath()).getFile();
-            ArrayList<Cart> carts = objectMapper.readValue(file, new TypeReference<ArrayList<Cart>>() {});
+        ArrayList<Cart> carts = getCarts();
 
-            carts.removeIf(cart -> cart.getId().equals(cartId));
-
-            objectMapper.writeValue(file, carts);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to write to carts.json");
+        boolean exists = carts.removeIf(cart -> cart.getId().equals(cartId));
+        
+        if (exists) {
+            overrideData(carts);
+            System.out.println("Cart removed");
+        } else {
+            System.out.println("Cart not removed: Cart not found");
         }
     }
 

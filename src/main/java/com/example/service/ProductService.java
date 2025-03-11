@@ -19,6 +19,9 @@ public class ProductService extends MainService<Product> {
     }
 
     public Product addProduct(Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
         return productRepository.addProduct(product);
     }
 
@@ -31,14 +34,26 @@ public class ProductService extends MainService<Product> {
     }
 
     public Product updateProduct(UUID productId, String newName, double newPrice) {
+        if (newPrice < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+        if (productId == null) {
+            throw new IllegalArgumentException("Product ID cannot be null");
+        }
         return productRepository.updateProduct(productId, newName, newPrice);
     }
 
     public void applyDiscount(double discount, ArrayList<UUID> productIds) {
+        if (discount < 0 || discount > 100) {
+            throw new IllegalArgumentException("Discount must be between 0 and 100");
+        }
         productRepository.applyDiscount(discount, productIds);
     }
 
     public void deleteProductById(UUID productId) {
+        if (productId == null) {
+            throw new IllegalArgumentException("Product ID cannot be null");
+        }
         productRepository.deleteProduct(productId);
     }
 
