@@ -2,7 +2,9 @@ package com.example.controller;
 
 import com.example.model.Product;
 import com.example.service.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -12,6 +14,10 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/product")
 public class ProductController {
+    private ObjectMapper objectMapper;
+    @Value("${spring.application.productDataPath}")
+    private String productDataPath;
+
     private ProductService productService;
 
     @Autowired

@@ -1,7 +1,8 @@
-package com.example.service;
+package com.example.MiniProject1;
 
 import com.example.model.Product;
 import com.example.repository.ProductRepository;
+import com.example.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -23,20 +23,34 @@ public class CartService extends MainService<Cart> {
 
     public Cart addCart(Cart cart) {
         if (cart == null) {
-            throw new IllegalArgumentException("Cart cannot be null");
+            throw new RuntimeException("Cart cannot be null");
         }
-        return repository.addCart(cart);
+       try {
+           return repository.addCart(cart);
+       } catch (Exception e) {
+           throw new RuntimeException("Cannot add cart");
+       }
+
     }
 
     public ArrayList<Cart> getCarts() {
-        return repository.getCarts();
+        ArrayList<Cart> carts = repository.getCarts();
+        if (carts == null) {
+            return new ArrayList<>();
+        }
+        return carts;
     }
 
     public Cart getCartById(UUID cartId) {
         if (cartId == null) {
-            throw new IllegalArgumentException("Cart ID cannot be null");
+            throw new RuntimeException("Cart ID cannot be null");
         }
-        return repository.getCartById(cartId);
+        Cart cart = repository.getCartById(cartId);
+        if (cart == null) {
+            throw new RuntimeException("Cart not found");
+        }
+        return cart;
+
     }
     public Cart getCartByUserId(UUID userId) {
         if (userId == null) {

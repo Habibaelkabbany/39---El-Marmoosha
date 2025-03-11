@@ -22,11 +22,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CartRepository extends MainRepository<Cart> {
 
     public Cart addCart(Cart cart) {
-        save(cart);
-        return cart;
+        try {
+            save(cart);
+            return cart;
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cart not added");
+        }
     }
 
     public ArrayList<Cart> getCarts() {
+
         return findAll();
     }
 

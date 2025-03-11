@@ -6,7 +6,7 @@ import com.example.model.Product;
 import com.example.model.User;
 
 import com.example.repository.UserRepository;
-import com.example.service.CartService;
+// import com.example.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,15 +25,22 @@ public class UserService extends MainService<User>{
         this.cartService = cartService;
     }
     public User addUser(User user) {
+        if (user.getName() == null) {
+            throw new NullPointerException("User name is required");
+        }
         return userRepository.addUser(user);
     }
     public ArrayList<User> getUsers() {
         return userRepository.getUsers();
     }
-    public User getUserById(UUID userId){
+    public User getUserById(UUID userId) {
         User user = userRepository.getUserById(userId);
+        if (user == null) {
+            return null;
+        }
         return user;
     }
+
     public List<Order> getOrdersByUserId(UUID userId){
 //        return userRepository.getOrdersByUserId(userId);
         List<Order> orders = userRepository.getOrdersByUserId(userId);

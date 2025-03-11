@@ -3,6 +3,8 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,9 @@ import com.example.service.CartService;
 @RestController
 @RequestMapping("/cart")
 public class CartController {
+    private ObjectMapper objectMapper;
+    @Value("${spring.application.cartDataPath}")
+    private String cartDataPath;
 
     private final CartService cartService;
 
