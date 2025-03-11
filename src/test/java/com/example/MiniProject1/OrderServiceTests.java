@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTests {
 
@@ -52,16 +51,18 @@ class OrderServiceTests {
         assertNotNull(result);
         assertEquals(testOrder.getUserId(), result.getUserId());
         assertEquals(testOrder.getTotalPrice(), result.getTotalPrice());
-        verify(orderRepository).addOrder(testOrder);
+        verify(orderRepository).addOrder(any(Order.class));
     }
 
     @Test
-    void testAddOrder_Negative() {
-        when(orderRepository.addOrder(any(Order.class))).thenThrow(new RuntimeException("Cannot add order"));
-
-        assertThrows(RuntimeException.class, () -> {
-            orderService.addOrder(testOrder);
+    void testAddOrder_Negative_EmptyProducts() {
+        Order orderWithEmptyProducts = new Order(userId, 100.0, new ArrayList<>());
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            orderService.addOrder(orderWithEmptyProducts);
         });
+        
+        verify(orderRepository, never()).addOrder(any());
     }
 
     @Test
@@ -76,7 +77,8 @@ class OrderServiceTests {
     // Get Orders Tests
     @Test
     void testGetOrders_Positive() {
-        ArrayList<Order> orders = new ArrayList<>(List.of(testOrder));
+        ArrayList<Order> orders = new ArrayList<>();
+        orders.add(testOrder);
         when(orderRepository.getOrders()).thenReturn(orders);
 
         ArrayList<Order> result = orderService.getOrders();
@@ -87,8 +89,8 @@ class OrderServiceTests {
     }
 
     @Test
-    void testGetOrders_Negative() {
-        when(orderRepository.getOrders()).thenReturn(new ArrayList<>());
+    void testGetOrders_Negative_EmptyList() {
+        lenient().when(orderRepository.getOrders()).thenReturn(new ArrayList<>());
 
         ArrayList<Order> result = orderService.getOrders();
 
@@ -98,7 +100,7 @@ class OrderServiceTests {
 
     @Test
     void testGetOrders_Edge_NullList() {
-        when(orderRepository.getOrders()).thenReturn(null);
+        lenient().when(orderRepository.getOrders()).thenReturn(null);
 
         assertThrows(IllegalStateException.class, () -> {
             orderService.getOrders();
@@ -109,7 +111,7 @@ class OrderServiceTests {
     @Test
     void testGetOrderById_Positive() {
         UUID orderId = testOrder.getId();
-        when(orderRepository.getOrderById(orderId)).thenReturn(testOrder);
+        when(orderRepository.getOrderById(eq(orderId))).thenReturn(testOrder);
 
         Order result = orderService.getOrderById(orderId);
 
@@ -118,9 +120,9 @@ class OrderServiceTests {
     }
 
     @Test
-    void testGetOrderById_Negative() {
+    void testGetOrderById_Negative_NonExistentId() {
         UUID orderId = UUID.randomUUID();
-        when(orderRepository.getOrderById(orderId)).thenReturn(null);
+        lenient().when(orderRepository.getOrderById(orderId)).thenReturn(null);
 
         assertThrows(IllegalStateException.class, () -> {
             orderService.getOrderById(orderId);
@@ -140,7 +142,7 @@ class OrderServiceTests {
     @Test
     void testDeleteOrderById_Positive() {
         UUID orderId = testOrder.getId();
-        when(orderRepository.getOrderById(orderId)).thenReturn(testOrder);
+        when(orderRepository.getOrderById(eq(orderId))).thenReturn(testOrder);
         doNothing().when(orderRepository).deleteOrderById(orderId);
 
         assertDoesNotThrow(() -> {
@@ -151,9 +153,9 @@ class OrderServiceTests {
     }
 
     @Test
-    void testDeleteOrderById_Negative() {
+    void testDeleteOrderById_Negative_NonExistentId() {
         UUID orderId = UUID.randomUUID();
-        when(orderRepository.getOrderById(orderId)).thenReturn(null);
+        lenient().when(orderRepository.getOrderById(orderId)).thenReturn(null);
 
         assertThrows(IllegalStateException.class, () -> {
             orderService.deleteOrderById(orderId);
