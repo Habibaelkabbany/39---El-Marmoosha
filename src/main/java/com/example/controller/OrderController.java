@@ -5,7 +5,9 @@ import java.util.UUID;
 
 import com.example.service.ProductService;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +25,9 @@ import com.example.service.OrderService;
 @RestController
 @RequestMapping("/order")
 public class OrderController {
+    private ObjectMapper objectMapper;
+    @Value("${spring.application.orderDataPath}")
+    private String orderDataPath;
     
     private final OrderService orderService;
 
