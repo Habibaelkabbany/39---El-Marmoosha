@@ -36,7 +36,7 @@ public class UserService extends MainService<User>{
     public User getUserById(UUID userId) {
         User user = userRepository.getUserById(userId);
         if (user == null) {
-            throw new RuntimeException("User not found");
+            return null;
         }
         return user;
     }
