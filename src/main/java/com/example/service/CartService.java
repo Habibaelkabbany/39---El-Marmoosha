@@ -22,6 +22,9 @@ public class CartService extends MainService<Cart> {
     }
 
     public Cart addCart(Cart cart) {
+        if (cart == null) {
+            throw new IllegalArgumentException("Cart cannot be null");
+        }
         return repository.addCart(cart);
     }
 
@@ -30,21 +33,39 @@ public class CartService extends MainService<Cart> {
     }
 
     public Cart getCartById(UUID cartId) {
+        if (cartId == null) {
+            throw new IllegalArgumentException("Cart ID cannot be null");
+        }
         return repository.getCartById(cartId);
     }
     public Cart getCartByUserId(UUID userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException("Cart ID cannot be null");
+        }
         return repository.getCartByUserId(userId);
     }
 
     public void addProductToCart(UUID cartId, Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
         repository.addProductToCart(cartId, product);
     }
 
     public void deleteProductFromCart(UUID cartId, Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
+        if (getCartById(cartId) == null) {
+            throw new IllegalArgumentException("Cart not found");
+        }
         repository.deleteProductFromCart(cartId, product);
     }
 
     public void deleteCart(UUID cartId) {
+        if (getCartById(cartId) == null) {
+            throw new IllegalArgumentException("Cart not found");
+        }
         repository.deleteCartById(cartId);
     }
 }

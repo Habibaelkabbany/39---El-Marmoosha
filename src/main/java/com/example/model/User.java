@@ -15,6 +15,11 @@ public class User {
     public User(){
 
     }
+
+    public User(String name) {
+        this.id = UUID.randomUUID();
+        this.name=name;
+    }
     public User(String name,List<Order> orders){
         this.id = UUID.randomUUID();
         this.name=name;

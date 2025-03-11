@@ -32,8 +32,8 @@ public class CartRepository extends MainRepository<Cart> {
 
     public Cart getCartById(UUID cartId) {
         ArrayList<Cart> carts = getCarts();
-        for(Cart cart : carts){
-            if(cart.getId().equals(cartId)) {
+        for (Cart cart : carts) {
+            if (cart.getId().equals(cartId)) {
                 return cart;
             }
         }
@@ -42,8 +42,8 @@ public class CartRepository extends MainRepository<Cart> {
 
     public Cart getCartByUserId(UUID userId) {
         ArrayList<Cart> carts = getCarts();
-        for(Cart cart : carts){
-            if(cart.getUserId().equals(userId)) {
+        for (Cart cart : carts) {
+            if (cart.getUserId().equals(userId)) {
                 return cart;
             }
         }
@@ -53,8 +53,8 @@ public class CartRepository extends MainRepository<Cart> {
     public void addProductToCart(UUID cartId, Product product) {
         ArrayList<Cart> carts = getCarts();
 
-        for(Cart cart : carts){
-            if(cart.getId().equals(cartId)) {
+        for (Cart cart : carts) {
+            if (cart.getId().equals(cartId)) {
                 cart.getProducts().add(product);
                 overrideData(carts);
 
@@ -62,33 +62,37 @@ public class CartRepository extends MainRepository<Cart> {
                 return;
             }
         }
-        System.out.println("Product not added: Cart not found");
+        throw new IllegalArgumentException("Product not added: Cart not found");
     }
 
     public void deleteProductFromCart(UUID cartId, Product product) {
         ArrayList<Cart> carts = getCarts();
+        Cart cart = getCartById(cartId);
+        if (cart == null) {
+            throw new IllegalArgumentException("Cart not found");
+        }
 
-        for(Cart cart : carts){
-            if(cart.getId().equals(cartId)) {
-                boolean exists = cart.getProducts().remove(product);
-                overrideData(carts);
-                if (exists) {
-                    System.out.println("Product removed");
-                    return;
-                } else {
-                    System.out.println("Product not removed: Product not found");
-                    return;
-                }
+        ArrayList<Product> products = new ArrayList<>();
+        for (Product p : cart.getProducts()) {
+            if (!p.getId().equals(product.getId())) {
+                products.add(p);
+                System.out.println("bap");
+            } else {
+                System.out.println("Product found");
             }
         }
-        System.out.println("Product not removed: Cart not found");
+        boolean removed = cart.getProducts().removeIf(p -> p.getId().equals(product.getId()));
+        System.out.println(removed);
+        overrideData(carts);
+        System.out.println("Product removed");
+        return;
     }
 
     public void deleteCartById(UUID cartId) {
         ArrayList<Cart> carts = getCarts();
 
         boolean exists = carts.removeIf(cart -> cart.getId().equals(cartId));
-        
+
         if (exists) {
             overrideData(carts);
             System.out.println("Cart removed");
