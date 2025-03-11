@@ -60,7 +60,6 @@ class UserServiceTest {
         assertThrows(NullPointerException.class, () -> userService.addUser(emptyUser));
     }
 
-    // TEST: getUsers()
     @Test
     void testGetUsers_Positive() {
         List<User> mockUsers = List.of(user);
