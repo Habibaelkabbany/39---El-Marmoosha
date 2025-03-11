@@ -88,8 +88,12 @@ public class CartRepository extends MainRepository<Cart> {
             }
         }
         boolean removed = cart.getProducts().removeIf(p -> p.getId().equals(product.getId()));
+        ArrayList<Cart> newCarts = new ArrayList<>();
+        for (Cart c : carts) {
+            newCarts.add(new Cart(c.getId(), c.getUserId(), products));
+        }
         System.out.println(removed);
-        overrideData(carts);
+        overrideData(newCarts);
         System.out.println("Product removed");
         return;
     }
