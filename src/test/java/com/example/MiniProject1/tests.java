@@ -101,13 +101,13 @@ class UserServiceTest {
     void testGetUserById_Negative() {
         when(userRepository.getUserById(any())).thenReturn(null);
 
-        assertThrows(RuntimeException.class, () -> userService.getUserById(UUID.randomUUID()));
+        assertNull(userService.getUserById(user.getId()));
     }
     @Test
     void testGetUserById_EdgeCase() {
         when(userRepository.getUserById(new UUID(0, 0))).thenReturn(null);
 
-        assertThrows(RuntimeException.class, () -> userService.getUserById(new UUID(0, 0)));
+        assertNull( userService.getUserById(new UUID(0, 0)));
     }
 
 

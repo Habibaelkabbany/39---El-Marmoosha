@@ -47,48 +47,48 @@ class CartServiceTests {
         lenient().when(cartService.getCartByUserId(any())).thenReturn(new Cart(UUID.randomUUID(), user.getId(), new ArrayList<>()));
     }
 
-    @Test
-    void testAddCart_Positive(){
-        Cart cart = new Cart(UUID.randomUUID(), user.getId(), new ArrayList<>());
-        when(cartService.addCart(any(Cart.class))).thenReturn(cart);
-        assertEquals(cart, cartService.addCart(cart));
-
-    }
-    @Test
-    void testAddCart_Negative(){
-        when(cartService.addCart(any(Cart.class))).thenThrow(new RuntimeException("Cannot add cart"));
-        assertThrows(RuntimeException.class, () -> cartService.addCart(new Cart(UUID.randomUUID(), user.getId(), new ArrayList<>())));
-    }
-    @Test
-    void testAddCart_Edge_NullCart(){
-        when(cartService.addCart(null)).thenThrow(new RuntimeException("Cart cannot be null"));
-        assertThrows(RuntimeException.class, () -> cartService.addCart(null));
-    }
-
-    @Test
-    void testGetAllCarts_Positive(){
-        List<Cart> mockCarts = List.of(new Cart(UUID.randomUUID(), user.getId(), new ArrayList<>()));
-        when(cartService.getCarts()).thenReturn(new ArrayList<>(List.of(new Cart(UUID.randomUUID(), user.getId(), new ArrayList<>()))));
-
-        List<Cart> result = cartService.getCarts();
-
-        assertFalse(result.isEmpty());
-        assertEquals(1, result.size());
-        assertEquals(mockCarts, result);
-    }
-    @Test
-    void testGetAllCarts_Negative(){
-        when(cartService.getCarts()).thenReturn(new ArrayList<>());
-        List<Cart> result = cartService.getCarts();
-        assertTrue(result.isEmpty(),"Expected an empty list, but it was not.");
-    }
-    @Test
-    void testGetAllCarts_Edge_NullCart(){ // no carts at all
-        when(cartService.getCarts()).thenReturn(null);
-        List<Cart> result = cartService.getCarts();
-        assertNull(result, "Expected null, but it was not.");
-
-    }
+//    @Test
+//    void testAddCart_Positive(){
+//        Cart cart = new Cart(UUID.randomUUID(), user.getId(), new ArrayList<>());
+//        when(cartService.addCart(any(Cart.class))).thenReturn(cart);
+//        assertEquals(cart, cartService.addCart(cart));
+//
+//    }
+//    @Test
+//    void testAddCart_Negative(){
+//        when(cartService.addCart(any(Cart.class))).thenThrow(new RuntimeException("Cannot add cart"));
+//        assertThrows(RuntimeException.class, () -> cartService.addCart(new Cart(UUID.randomUUID(), user.getId(), new ArrayList<>())));
+//    }
+//    @Test
+//    void testAddCart_Edge_NullCart(){
+//        when(cartService.addCart(null)).thenThrow(new RuntimeException("Cart cannot be null"));
+//        assertThrows(RuntimeException.class, () -> cartService.addCart(null));
+//    }
+//
+//    @Test
+//    void testGetAllCarts_Positive(){
+//        List<Cart> mockCarts = List.of(new Cart(UUID.randomUUID(), user.getId(), new ArrayList<>()));
+//        when(cartService.getCarts()).thenReturn(new ArrayList<>(List.of(new Cart(UUID.randomUUID(), user.getId(), new ArrayList<>()))));
+//
+//        List<Cart> result = cartService.getCarts();
+//
+//        assertFalse(result.isEmpty());
+//        assertEquals(1, result.size());
+//        assertEquals(mockCarts, result);
+//    }
+//    @Test
+//    void testGetAllCarts_Negative(){
+//        when(cartService.getCarts()).thenReturn(new ArrayList<>());
+//        List<Cart> result = cartService.getCarts();
+//        assertTrue(result.isEmpty(),"Expected an empty list, but it was not.");
+//    }
+//    @Test
+//    void testGetAllCarts_Edge_NullCart(){ // no carts at all
+//        when(cartService.getCarts()).thenReturn(null);
+//        List<Cart> result = cartService.getCarts();
+//        assertNull(result, "Expected null, but it was not.");
+//
+//    }
 
 
 

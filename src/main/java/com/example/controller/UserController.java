@@ -39,6 +39,7 @@ public class UserController {
     
     @GetMapping("/{userId}")
     public User getUserById(@PathVariable UUID userId){
+
         return userService.getUserById(userId);
     }
     @GetMapping("/{userId}/orders")
@@ -91,10 +92,12 @@ public class UserController {
     @DeleteMapping("/delete/{userId}")
     public String deleteUserById(@PathVariable UUID userId){
         boolean exists = getUserById(userId) != null;
+
         if (!exists) {
             return "User not found";
         }
         userService.deleteUserById(userId);
+
         return "User deleted successfully";
     }
 
