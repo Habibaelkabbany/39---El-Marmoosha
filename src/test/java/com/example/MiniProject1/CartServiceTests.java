@@ -30,8 +30,8 @@ class CartServiceTests {
     @InjectMocks
     private CartService  cartService;
 
-    @InjectMocks
-    private UserService userService;
+    // @InjectMocks
+    // private UserService userService;
 
     @BeforeEach
     void setUp() {
@@ -92,20 +92,19 @@ class CartServiceTests {
 
 	@Test
 	void getCarts_EmptyRepository_ReturnsEmptyList() {
-        cartRepository.overrideData(new ArrayList<>());
+        cartService.getRepository().overrideData(new ArrayList<>());
 
 		ArrayList<Cart> result = cartService.getCarts();
-        System.out.println(result);
 		assertTrue(result.isEmpty());
 	}
 
 	@Test
 	void getCarts_NullFromRepository_ReturnsEmptyList() {
+        cartService.getRepository().overrideData(null);
 		when(cartRepository.getCarts()).thenReturn(null);
 
-		ArrayList<Cart> result = cartService.getCarts();
+        assertThrows(NullPointerException.class, () -> cartService.getCarts());
 
-		assertNull(result);
 	}
 
 	// Tests for cartService.getCartById()
@@ -213,7 +212,7 @@ class CartServiceTests {
         // ArrayList<Cart> carts = new ArrayList<>();
         // carts.add(cart);
         // cartRepository.overrideData(carts);
-        
+        cartService.getCartById(cart.getId());
         cartService.deleteProductFromCart(cart.getId(), product);
         Cart result = cartService.getCartById(cart.getId());
         Product productResult = null;

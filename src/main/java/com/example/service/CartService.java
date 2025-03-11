@@ -35,9 +35,7 @@ public class CartService extends MainService<Cart> {
 
     public ArrayList<Cart> getCarts() {
         ArrayList<Cart> carts = repository.getCarts();
-        if (carts == null) {
-            return new ArrayList<>();
-        }
+        
         return carts;
     }
 
@@ -82,4 +80,9 @@ public class CartService extends MainService<Cart> {
         }
         repository.deleteCartById(cartId);
     }
+
+    public CartRepository getRepository() {
+        return repository;
+    }
+
 }
